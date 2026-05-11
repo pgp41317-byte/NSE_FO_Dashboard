@@ -17,3 +17,5 @@ joblib
 scikit-learn
 statsmodels
 nsepython
+
+streamlit-autorefresh
