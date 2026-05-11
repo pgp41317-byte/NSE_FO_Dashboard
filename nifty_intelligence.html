@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="refresh" content="60">
+<title>Stock Intelligence — 04-May-2026  14:48:32</title>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<style>
+
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#050A0F;--bg1:#080f18;--bg2:#0d1825;--bg3:#111f30;--bd:#1a3a55;
+      --cy:#00cfff;--gr:#00ff88;--rd:#ff4444;--am:#ffaa00;--pu:#cc88ff;
+      --tx:#e0e0e0;--mu:#667788;--font:'Courier New',monospace}
+body{background:var(--bg);color:var(--tx);font-family:var(--font);font-size:13px;overflow-x:hidden}
+.hdr{padding:12px 20px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:1px solid var(--bd)}
+.logo{color:var(--cy);font-size:17px;font-weight:bold;letter-spacing:3px}
+.badge-live{background:var(--rd);color:white;padding:3px 10px;border-radius:3px;font-size:10px;font-weight:bold;animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0.3}}
+.nav{display:flex;gap:0;border:1px solid var(--bd);border-radius:4px;overflow:hidden}
+.nav a{padding:7px 18px;color:var(--mu);text-decoration:none;font-size:12px;letter-spacing:1px;transition:all .2s;display:inline-block}
+.nav a.active{background:var(--cy);color:#050A0F;font-weight:bold}
+.nav a:hover:not(.active){background:var(--bg2);color:var(--cy)}
+.index-bar{display:flex;gap:18px;padding:8px 20px;background:var(--bg1);border-bottom:1px solid var(--bd);flex-wrap:wrap}
+.ib{display:flex;flex-direction:column;align-items:flex-start;gap:0}
+.ib-name{font-size:9px;color:var(--mu);letter-spacing:1px}
+.ib-val{font-size:13px;font-weight:bold}
+.ib-chg{font-size:10px}
+.tape{background:#0a1520;border-top:1px solid var(--bd);border-bottom:1px solid var(--bd);padding:7px 0;overflow:hidden;white-space:nowrap}
+.tape-inner{display:inline-flex;gap:32px;animation:scroll 50s linear infinite}
+@keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ti{display:inline-block;white-space:nowrap;font-size:12px}
+.tl{color:var(--mu)} .tv{font-weight:bold}
+.up{color:var(--gr)} .dn{color:var(--rd)} .neu{color:var(--cy)} .amb{color:var(--am)}
+.sec{background:var(--bg1);border:1px solid var(--bd);border-radius:6px;padding:16px;margin:8px 16px}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.g6{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}
+.mc{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;padding:14px;text-align:center}
+.mv{font-size:20px;font-weight:bold;color:var(--cy);margin:6px 0}
+.ml{font-size:10px;color:var(--mu);letter-spacing:1px;text-transform:uppercase}
+.ms{font-size:11px;color:#778;margin-top:3px}
+h2{color:var(--cy);font-size:12px;letter-spacing:2px;border-bottom:1px solid var(--bd);padding-bottom:8px;margin-bottom:12px;text-transform:uppercase}
+table{width:100%;border-collapse:collapse}
+th{background:#0d2035;color:var(--cy);padding:8px 10px;text-align:left;font-size:10px;letter-spacing:1px}
+td{padding:7px 10px;border-bottom:1px solid #0a1620;font-size:12px}
+tr:hover td{background:rgba(0,207,255,0.04)}
+.score-bar{background:#0d1825;border-radius:3px;height:6px;overflow:hidden;margin-top:4px}
+.score-fill{height:100%;border-radius:3px}
+.card-pick{background:var(--bg2);border:1px solid var(--bd);border-radius:8px;padding:16px;
+           transition:border-color .2s;cursor:default}
+.card-pick:hover{border-color:var(--cy)}
+.signal-badge{display:inline-block;padding:2px 10px;border-radius:10px;font-size:10px;font-weight:bold;letter-spacing:1px}
+.gk{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;padding:12px;text-align:center}
+.gv{font-size:18px;font-weight:bold;color:var(--am)}
+.gl{font-size:10px;color:var(--mu);letter-spacing:1px;margin-top:4px}
+.vt{background:#0d1825;border-radius:4px;height:8px;margin:4px 0;overflow:hidden}
+.vf{height:100%;border-radius:4px;background:linear-gradient(90deg,#00ff88 0%,#ffaa00 50%,#ff4444 100%)}
+.rec-box{border-radius:8px;padding:20px;border-width:2px;border-style:solid}
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-track{background:#0a1520}::-webkit-scrollbar-thumb{background:#1a3a55}
+@media(max-width:1100px){.g6{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:800px){.g2,.g3,.g4,.g6{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.g2,.g3,.g4,.g6{grid-template-columns:1fr}}
+
+.search-box{background:var(--bg2);border:1px solid var(--bd);border-radius:6px;padding:16px;margin:8px 16px}
+.search-input{background:var(--bg);border:1px solid var(--bd);color:var(--tx);padding:10px 16px;
+  border-radius:4px;font-family:var(--font);font-size:13px;width:100%;letter-spacing:1px;outline:none}
+.search-input:focus{border-color:var(--cy)}
+.search-btn{background:var(--cy);color:#050A0F;border:none;padding:10px 22px;border-radius:4px;
+  cursor:pointer;font-family:var(--font);font-size:13px;font-weight:bold;letter-spacing:1px;margin-left:8px}
+.search-btn:hover{background:#00e6ff}
+#search-result{display:none;margin-top:14px}
+.ai-box{background:var(--bg);border:1px solid #1a4060;border-radius:6px;padding:14px;
+  font-size:13px;color:#bbb;line-height:1.8;min-height:60px}
+.ai-thinking{color:var(--am);font-style:italic}
+.peer-table th{font-size:9px}
+.peer-table td{font-size:11px}
+.picks-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px;margin-top:12px}
+</style>
+</head>
+<body>
+<div class="hdr">
+  <div>
+    <div class="logo">🧠 STOCK INTELLIGENCE ENGINE</div>
+    <div style="color:var(--mu);font-size:11px;margin-top:2px">
+      15 Technical + 15 Fundamental + Sentiment · Fetched: <b style="color:var(--cy)">04-May-2026  14:48:32</b>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <div class="nav">
+      <a href="http://127.0.0.1:8765/nifty_dashboard_live.html" class="">⬡ NIFTY MC TERMINAL</a>
+      <a href="http://127.0.0.1:8765/nifty_intelligence.html" class="active">🧠 STOCK INTELLIGENCE</a>
+    </div>
+    <div style="text-align:right">
+      <span class="badge-live">● LIVE</span>
+      <div style="color:var(--am);font-size:11px;margin-top:3px">Next: <span id="cd">60</span>s</div>
+    </div>
+  </div>
+</div>
+
+<div class="index-bar"><div class="ib">
+          <span class="ib-name">NIFTY 50</span>
+          <span class="ib-val" style="color:#00ff88">₹24,084.70</span>
+          <span class="ib-chg" style="color:#00ff88">▲ 0.36%</span>
+        </div><div class="ib">
+          <span class="ib-name">BANK NIFTY</span>
+          <span class="ib-val" style="color:#ff4444">₹54,825</span>
+          <span class="ib-chg" style="color:#ff4444">▼ 0.07%</span>
+        </div><div class="ib">
+          <span class="ib-name">SENSEX</span>
+          <span class="ib-val" style="color:#00ff88">₹77,241.48</span>
+          <span class="ib-chg" style="color:#00ff88">▲ 0.43%</span>
+        </div><div class="ib">
+          <span class="ib-name">USD/INR</span>
+          <span class="ib-val" style="color:#00cfff">₹95.00</span>
+          <span class="ib-chg" style="color:#00cfff">— 0.00%</span>
+        </div><div class="ib">
+          <span class="ib-name">INDIA VIX</span>
+          <span class="ib-val" style="color:#00cfff">18.49%</span>
+          <span class="ib-chg" style="color:#00cfff">— 0.00%</span>
+        </div></div>
+
+<!-- MARKET SENTIMENT BANNER -->
+<div style="background:rgba(0,255,136,0.06);
+  border-bottom:1px solid var(--bd);padding:8px 20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap">
+  <div style="font-size:11px;color:var(--mu);letter-spacing:1px">MARKET SENTIMENT</div>
+  <div style="font-size:14px;font-weight:bold;color:#66ff99">MILDLY BULLISH</div>
+  <div style="flex:1;max-width:200px;background:var(--bg2);border-radius:10px;height:6px;overflow:hidden">
+    <div style="width:61.5%;height:100%;background:#66ff99;border-radius:10px"></div>
+  </div>
+  <div style="font-size:12px;color:#aaa">
+    Score: <b style="color:#66ff99">62/100</b> &nbsp;·&nbsp;
+    <span style="color:#00ff88">▲ 13 positive</span> &nbsp;·&nbsp;
+    <span style="color:#ff4444">▼ 3 negative</span> &nbsp;·&nbsp;
+    <span style="color:#ffaa00">— 4 neutral</span>
+  </div>
+</div>
+
+<!-- SEARCH BAR -->
+<div class="search-box">
+  <h2 style="margin-bottom:12px">▸ STOCK SEARCH & ANALYSIS</h2>
+  <div style="display:flex;align-items:center">
+    <input id="search-ticker" class="search-input" type="text"
+      placeholder="Search ticker (e.g. RELIANCE, TCS, INFY, HDFCBANK) — press Enter or click Analyse"
+      style="flex:1" />
+    <button class="search-btn" onclick="doSearch()">ANALYSE</button>
+  </div>
+  <div id="search-result">
+    <div id="ai-response" class="ai-box" style="margin-top:12px"></div>
+    <div class="g2" style="margin-top:12px;gap:10px">
+      <div id="search-tech-table" style="overflow-x:auto"></div>
+      <div id="search-fund-table" style="overflow-x:auto"></div>
+    </div>
+    <div style="margin-top:10px" id="search-charts">
+      <div class="g2" style="gap:10px">
+        <div class="sec" style="margin:0"><h2>▸ PRICE + MA CHART</h2><div id="ch-search-price" style="height:260px"></div></div>
+        <div class="sec" style="margin:0"><h2>▸ RSI (14)</h2><div id="ch-search-rsi" style="height:260px"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TOP INTRADAY PICKS -->
+<div class="sec">
+  <h2>▸ TOP 5 INTRADAY PICKS
+    <span style="color:var(--mu);font-size:10px;font-weight:normal;margin-left:8px">Ranked by Tech Score × Sentiment · Today's session</span>
+  </h2>
+  <div class="picks-grid">
+<div class="card-pick" style="border-color:#00ff8822">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+    <div>
+      <span style="color:#00ff88;font-size:16px;font-weight:bold">#1 LT</span>
+      <span style="color:#aaa;font-size:11px;margin-left:8px">Larsen & Toubro</span>
+    </div>
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">PRICE</div>
+      <div style="color:#eee;font-size:18px;font-weight:bold">₹4,094.30</div>
+    </div>
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">COMPOSITE</div>
+      <div style="color:#00ff88;font-size:18px;font-weight:bold">77.4/100</div>
+      <div class="score-bar"><div class="score-fill" style="width:77.4%;background:#00ff88"></div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;margin-bottom:12px">
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">ENTRY</div>
+      <div style="color:#eee;font-weight:bold">₹4,092.25</div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">STOP LOSS</div>
+      <div style="color:#ff4444;font-weight:bold">₹3,927.78 <span style="color:#667">(-4.1%)</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">TARGET 2</div>
+      <div style="color:#00ff88;font-weight:bold">₹4,311.55 <span style="color:#667">(+5.3%)</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;font-size:10px">
+    <div style="flex:1;background:rgba(0,207,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">TECH</div>
+      <div style="color:#00cfff;font-weight:bold">100.0</div>
+    </div>
+    <div style="flex:1;background:rgba(204,136,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">FUND</div>
+      <div style="color:#cc88ff;font-weight:bold">54.0</div>
+    </div>
+    <div style="flex:1;background:rgba(255,170,0,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">SENT</div>
+      <div style="color:#ffaa00;font-weight:bold">74</div>
+    </div>
+    <div style="flex:1;background:rgba(0,255,136,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">R:R</div>
+      <div style="color:#00ff88;font-weight:bold">1:1.33</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#889;line-height:1.6;border-top:1px solid var(--bd);padding-top:8px">
+    Larsen & Toubro: RSI=58 in bullish territory. MACD crossed above signal line — fresh buy signal. Trading above VWAP ₹3,785.33 — institutional buying support. EMA9 crossed above EMA21 intraday. Intrada...
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:6px;font-size:9px">
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T1: ₹4,202</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T2: ₹4,312</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T3: ₹4,421</span>
+  </div>
+</div>
+<div class="card-pick" style="border-color:#00ff8822">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+    <div>
+      <span style="color:#00ff88;font-size:16px;font-weight:bold">#2 NTPC</span>
+      <span style="color:#aaa;font-size:11px;margin-left:8px">NTPC</span>
+    </div>
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">PRICE</div>
+      <div style="color:#eee;font-size:18px;font-weight:bold">₹398.65</div>
+    </div>
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">COMPOSITE</div>
+      <div style="color:#00ff88;font-size:18px;font-weight:bold">85.7/100</div>
+      <div class="score-bar"><div class="score-fill" style="width:85.7%;background:#00ff88"></div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;margin-bottom:12px">
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">ENTRY</div>
+      <div style="color:#eee;font-weight:bold">₹398.45</div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">STOP LOSS</div>
+      <div style="color:#ff4444;font-weight:bold">₹384.50 <span style="color:#667">(-3.5%)</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">TARGET 2</div>
+      <div style="color:#00ff88;font-weight:bold">₹417.05 <span style="color:#667">(+4.6%)</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;font-size:10px">
+    <div style="flex:1;background:rgba(0,207,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">TECH</div>
+      <div style="color:#00cfff;font-weight:bold">100.0</div>
+    </div>
+    <div style="flex:1;background:rgba(204,136,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">FUND</div>
+      <div style="color:#cc88ff;font-weight:bold">86.0</div>
+    </div>
+    <div style="flex:1;background:rgba(255,170,0,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">SENT</div>
+      <div style="color:#ffaa00;font-weight:bold">62</div>
+    </div>
+    <div style="flex:1;background:rgba(0,255,136,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">R:R</div>
+      <div style="color:#00ff88;font-weight:bold">1:1.33</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#889;line-height:1.6;border-top:1px solid var(--bd);padding-top:8px">
+    NTPC: RSI=58 in bullish territory. MACD crossed above signal line — fresh buy signal. Trading above VWAP ₹342.94 — institutional buying support. EMA9 crossed above EMA21 intraday. Intraday momentum tr...
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:6px;font-size:9px">
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T1: ₹408</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T2: ₹417</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T3: ₹426</span>
+  </div>
+</div>
+<div class="card-pick" style="border-color:#00ff8822">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+    <div>
+      <span style="color:#00ff88;font-size:16px;font-weight:bold">#3 BAJFINANCE</span>
+      <span style="color:#aaa;font-size:11px;margin-left:8px">Bajaj Finance</span>
+    </div>
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">PRICE</div>
+      <div style="color:#eee;font-size:18px;font-weight:bold">₹948.35</div>
+    </div>
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">COMPOSITE</div>
+      <div style="color:#00ff88;font-size:18px;font-weight:bold">78.0/100</div>
+      <div class="score-bar"><div class="score-fill" style="width:78.0%;background:#00ff88"></div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;margin-bottom:12px">
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">ENTRY</div>
+      <div style="color:#eee;font-weight:bold">₹947.88</div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">STOP LOSS</div>
+      <div style="color:#ff4444;font-weight:bold">₹905.53 <span style="color:#667">(-4.5%)</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">TARGET 2</div>
+      <div style="color:#00ff88;font-weight:bold">₹1,004.34 <span style="color:#667">(+5.9%)</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;font-size:10px">
+    <div style="flex:1;background:rgba(0,207,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">TECH</div>
+      <div style="color:#00cfff;font-weight:bold">100.0</div>
+    </div>
+    <div style="flex:1;background:rgba(204,136,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">FUND</div>
+      <div style="color:#cc88ff;font-weight:bold">68.0</div>
+    </div>
+    <div style="flex:1;background:rgba(255,170,0,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">SENT</div>
+      <div style="color:#ffaa00;font-weight:bold">57</div>
+    </div>
+    <div style="flex:1;background:rgba(0,255,136,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">R:R</div>
+      <div style="color:#00ff88;font-weight:bold">1:1.33</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#889;line-height:1.6;border-top:1px solid var(--bd);padding-top:8px">
+    Bajaj Finance: RSI=60 in bullish territory. MACD crossed above signal line — fresh buy signal. Trading above VWAP ₹945.82 — institutional buying support. EMA9 crossed above EMA21 intraday. Intraday mo...
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:6px;font-size:9px">
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T1: ₹976</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T2: ₹1,004</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T3: ₹1,033</span>
+  </div>
+</div>
+<div class="card-pick" style="border-color:#00ff8822">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+    <div>
+      <span style="color:#00ff88;font-size:16px;font-weight:bold">#4 HINDUNILVR</span>
+      <span style="color:#aaa;font-size:11px;margin-left:8px">HUL</span>
+    </div>
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">PRICE</div>
+      <div style="color:#eee;font-size:18px;font-weight:bold">₹2,299.30</div>
+    </div>
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">COMPOSITE</div>
+      <div style="color:#00ff88;font-size:18px;font-weight:bold">81.2/100</div>
+      <div class="score-bar"><div class="score-fill" style="width:81.2%;background:#00ff88"></div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;margin-bottom:12px">
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">ENTRY</div>
+      <div style="color:#eee;font-weight:bold">₹2,371.08</div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">STOP LOSS</div>
+      <div style="color:#ff4444;font-weight:bold">₹2,264.78 <span style="color:#667">(-1.5%)</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">TARGET 2</div>
+      <div style="color:#00ff88;font-weight:bold">₹2,512.82 <span style="color:#667">(+9.3%)</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;font-size:10px">
+    <div style="flex:1;background:rgba(0,207,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">TECH</div>
+      <div style="color:#00cfff;font-weight:bold">99.5</div>
+    </div>
+    <div style="flex:1;background:rgba(204,136,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">FUND</div>
+      <div style="color:#cc88ff;font-weight:bold">77.0</div>
+    </div>
+    <div style="flex:1;background:rgba(255,170,0,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">SENT</div>
+      <div style="color:#ffaa00;font-weight:bold">58</div>
+    </div>
+    <div style="flex:1;background:rgba(0,255,136,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">R:R</div>
+      <div style="color:#00ff88;font-weight:bold">1:1.33</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#889;line-height:1.6;border-top:1px solid var(--bd);padding-top:8px">
+    HUL: RSI=57 in bullish territory. MACD crossed above signal line — fresh buy signal. EMA9 crossed above EMA21 intraday. Intraday momentum trade with ATR-based stops....
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:6px;font-size:9px">
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T1: ₹2,442</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T2: ₹2,513</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T3: ₹2,584</span>
+  </div>
+</div>
+<div class="card-pick" style="border-color:#00ff8822">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+    <div>
+      <span style="color:#00ff88;font-size:16px;font-weight:bold">#5 POWERGRID</span>
+      <span style="color:#aaa;font-size:11px;margin-left:8px">Power Grid Corporation</span>
+    </div>
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">PRICE</div>
+      <div style="color:#eee;font-size:18px;font-weight:bold">₹318.40</div>
+    </div>
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">COMPOSITE</div>
+      <div style="color:#00ff88;font-size:18px;font-weight:bold">85.2/100</div>
+      <div class="score-bar"><div class="score-fill" style="width:85.2%;background:#00ff88"></div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;margin-bottom:12px">
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">ENTRY</div>
+      <div style="color:#eee;font-weight:bold">₹318.24</div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">STOP LOSS</div>
+      <div style="color:#ff4444;font-weight:bold">₹307.56 <span style="color:#667">(-3.4%)</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">TARGET 2</div>
+      <div style="color:#00ff88;font-weight:bold">₹332.48 <span style="color:#667">(+4.4%)</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;font-size:10px">
+    <div style="flex:1;background:rgba(0,207,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">TECH</div>
+      <div style="color:#00cfff;font-weight:bold">100.0</div>
+    </div>
+    <div style="flex:1;background:rgba(204,136,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">FUND</div>
+      <div style="color:#cc88ff;font-weight:bold">89.0</div>
+    </div>
+    <div style="flex:1;background:rgba(255,170,0,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">SENT</div>
+      <div style="color:#ffaa00;font-weight:bold">56</div>
+    </div>
+    <div style="flex:1;background:rgba(0,255,136,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">R:R</div>
+      <div style="color:#00ff88;font-weight:bold">1:1.33</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#889;line-height:1.6;border-top:1px solid var(--bd);padding-top:8px">
+    Power Grid Corporation: RSI=63 in bullish territory. MACD crossed above signal line — fresh buy signal. Trading above VWAP ₹282.29 — institutional buying support. EMA9 crossed above EMA21 intraday. In...
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:6px;font-size:9px">
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T1: ₹325</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T2: ₹332</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T3: ₹340</span>
+  </div>
+</div></div>
+</div>
+
+<!-- TOP LONG-TERM PICKS -->
+<div class="sec">
+  <h2>▸ TOP 5 LONG-TERM PICKS
+    <span style="color:var(--mu);font-size:10px;font-weight:normal;margin-left:8px">Ranked by Fundamental + Technical + Sentiment composite</span>
+  </h2>
+  <div class="picks-grid">
+<div class="card-pick" style="border-color:#00ff8822">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+    <div>
+      <span style="color:#00ff88;font-size:16px;font-weight:bold">#1 POWERGRID</span>
+      <span style="color:#aaa;font-size:11px;margin-left:8px">Power Grid Corporation</span>
+    </div>
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">PRICE</div>
+      <div style="color:#eee;font-size:18px;font-weight:bold">₹318.40</div>
+    </div>
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">COMPOSITE</div>
+      <div style="color:#00ff88;font-size:18px;font-weight:bold">85.2/100</div>
+      <div class="score-bar"><div class="score-fill" style="width:85.2%;background:#00ff88"></div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;margin-bottom:12px">
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">ENTRY</div>
+      <div style="color:#eee;font-weight:bold">₹319.04</div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">STOP LOSS</div>
+      <div style="color:#ff4444;font-weight:bold">₹281.25 <span style="color:#667">(-11.7%)</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">TARGET 2</div>
+      <div style="color:#00ff88;font-weight:bold">₹366.16 <span style="color:#667">(+15.0%)</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;font-size:10px">
+    <div style="flex:1;background:rgba(0,207,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">TECH</div>
+      <div style="color:#00cfff;font-weight:bold">100.0</div>
+    </div>
+    <div style="flex:1;background:rgba(204,136,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">FUND</div>
+      <div style="color:#cc88ff;font-weight:bold">89.0</div>
+    </div>
+    <div style="flex:1;background:rgba(255,170,0,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">SENT</div>
+      <div style="color:#ffaa00;font-weight:bold">56</div>
+    </div>
+    <div style="flex:1;background:rgba(0,255,136,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">R:R</div>
+      <div style="color:#00ff88;font-weight:bold">1:1.25</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#889;line-height:1.6;border-top:1px solid var(--bd);padding-top:8px">
+    Power Grid Corporation: P/E=20.45x — reasonable valuation. Revenue growing at 10.3% — strong business momentum. Golden cross (MA50>MA200) — long-term uptrend intact. Technical score 100.0/100, Fundame...
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:6px;font-size:9px">
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T1: ₹344</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T2: ₹366</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T3: ₹398</span>
+  </div>
+</div>
+<div class="card-pick" style="border-color:#00ff8822">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+    <div>
+      <span style="color:#00ff88;font-size:16px;font-weight:bold">#2 NTPC</span>
+      <span style="color:#aaa;font-size:11px;margin-left:8px">NTPC</span>
+    </div>
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">PRICE</div>
+      <div style="color:#eee;font-size:18px;font-weight:bold">₹398.65</div>
+    </div>
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">COMPOSITE</div>
+      <div style="color:#00ff88;font-size:18px;font-weight:bold">85.7/100</div>
+      <div class="score-bar"><div class="score-fill" style="width:85.7%;background:#00ff88"></div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;margin-bottom:12px">
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">ENTRY</div>
+      <div style="color:#eee;font-weight:bold">₹399.45</div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">STOP LOSS</div>
+      <div style="color:#ff4444;font-weight:bold">₹348.86 <span style="color:#667">(-12.5%)</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">TARGET 2</div>
+      <div style="color:#00ff88;font-weight:bold">₹458.45 <span style="color:#667">(+15.0%)</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;font-size:10px">
+    <div style="flex:1;background:rgba(0,207,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">TECH</div>
+      <div style="color:#00cfff;font-weight:bold">100.0</div>
+    </div>
+    <div style="flex:1;background:rgba(204,136,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">FUND</div>
+      <div style="color:#cc88ff;font-weight:bold">86.0</div>
+    </div>
+    <div style="flex:1;background:rgba(255,170,0,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">SENT</div>
+      <div style="color:#ffaa00;font-weight:bold">62</div>
+    </div>
+    <div style="flex:1;background:rgba(0,255,136,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">R:R</div>
+      <div style="color:#00ff88;font-weight:bold">1:1.17</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#889;line-height:1.6;border-top:1px solid var(--bd);padding-top:8px">
+    NTPC: P/E=22.05x — reasonable valuation. Golden cross (MA50>MA200) — long-term uptrend intact. Positive news sentiment supports the thesis. Technical score 100.0/100, Fundamental score 86.0/100. Buy i...
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:6px;font-size:9px">
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T1: ₹431</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T2: ₹458</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T3: ₹498</span>
+  </div>
+</div>
+<div class="card-pick" style="border-color:#00ff8822">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+    <div>
+      <span style="color:#00ff88;font-size:16px;font-weight:bold">#3 RELIANCE</span>
+      <span style="color:#aaa;font-size:11px;margin-left:8px">Reliance Industries</span>
+    </div>
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">PRICE</div>
+      <div style="color:#eee;font-size:18px;font-weight:bold">₹1,458.80</div>
+    </div>
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">COMPOSITE</div>
+      <div style="color:#00ff88;font-size:18px;font-weight:bold">78.5/100</div>
+      <div class="score-bar"><div class="score-fill" style="width:78.5%;background:#00ff88"></div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;margin-bottom:12px">
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">ENTRY</div>
+      <div style="color:#eee;font-weight:bold">₹1,461.72</div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">STOP LOSS</div>
+      <div style="color:#ff4444;font-weight:bold">₹1,265.46 <span style="color:#667">(-13.3%)</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">TARGET 2</div>
+      <div style="color:#00ff88;font-weight:bold">₹1,677.62 <span style="color:#667">(+15.0%)</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;font-size:10px">
+    <div style="flex:1;background:rgba(0,207,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">TECH</div>
+      <div style="color:#00cfff;font-weight:bold">84.0</div>
+    </div>
+    <div style="flex:1;background:rgba(204,136,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">FUND</div>
+      <div style="color:#cc88ff;font-weight:bold">87.0</div>
+    </div>
+    <div style="flex:1;background:rgba(255,170,0,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">SENT</div>
+      <div style="color:#ffaa00;font-weight:bold">58</div>
+    </div>
+    <div style="flex:1;background:rgba(0,255,136,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">R:R</div>
+      <div style="color:#00ff88;font-weight:bold">1:1.1</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#889;line-height:1.6;border-top:1px solid var(--bd);padding-top:8px">
+    Reliance Industries: P/E=24.46x — reasonable valuation. Revenue growing at 12.5% — strong business momentum. Positive free cash flow generation. Low debt (D/E=36.65) — balance sheet strength. Technica...
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:6px;font-size:9px">
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T1: ₹1,576</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T2: ₹1,678</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T3: ₹1,824</span>
+  </div>
+</div>
+<div class="card-pick" style="border-color:#00ff8822">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+    <div>
+      <span style="color:#00ff88;font-size:16px;font-weight:bold">#4 HINDUNILVR</span>
+      <span style="color:#aaa;font-size:11px;margin-left:8px">HUL</span>
+    </div>
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">PRICE</div>
+      <div style="color:#eee;font-size:18px;font-weight:bold">₹2,299.30</div>
+    </div>
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">COMPOSITE</div>
+      <div style="color:#00ff88;font-size:18px;font-weight:bold">81.2/100</div>
+      <div class="score-bar"><div class="score-fill" style="width:81.2%;background:#00ff88"></div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;margin-bottom:12px">
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">ENTRY</div>
+      <div style="color:#eee;font-weight:bold">₹2,303.90</div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">STOP LOSS</div>
+      <div style="color:#ff4444;font-weight:bold">₹2,003.34 <span style="color:#667">(-12.9%)</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">TARGET 2</div>
+      <div style="color:#00ff88;font-weight:bold">₹2,644.20 <span style="color:#667">(+15.0%)</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;font-size:10px">
+    <div style="flex:1;background:rgba(0,207,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">TECH</div>
+      <div style="color:#00cfff;font-weight:bold">99.5</div>
+    </div>
+    <div style="flex:1;background:rgba(204,136,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">FUND</div>
+      <div style="color:#cc88ff;font-weight:bold">77.0</div>
+    </div>
+    <div style="flex:1;background:rgba(255,170,0,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">SENT</div>
+      <div style="color:#ffaa00;font-weight:bold">58</div>
+    </div>
+    <div style="flex:1;background:rgba(0,255,136,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">R:R</div>
+      <div style="color:#00ff88;font-weight:bold">1:1.13</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#889;line-height:1.6;border-top:1px solid var(--bd);padding-top:8px">
+    HUL: ROE=21.6% — strong capital efficiency. Positive free cash flow generation. Low debt (D/E=3.02) — balance sheet strength. Technical score 99.5/100, Fundamental score 77.0/100. Buy in tranches; tra...
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:6px;font-size:9px">
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T1: ₹2,483</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T2: ₹2,644</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T3: ₹2,874</span>
+  </div>
+</div>
+<div class="card-pick" style="border-color:#00ff8822">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+    <div>
+      <span style="color:#00ff88;font-size:16px;font-weight:bold">#5 TECHM</span>
+      <span style="color:#aaa;font-size:11px;margin-left:8px">Tech Mahindra</span>
+    </div>
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">PRICE</div>
+      <div style="color:#eee;font-size:18px;font-weight:bold">₹1,467.60</div>
+    </div>
+    <div>
+      <div style="color:var(--mu);font-size:9px;letter-spacing:1px">COMPOSITE</div>
+      <div style="color:#00ff88;font-size:18px;font-weight:bold">76.3/100</div>
+      <div class="score-bar"><div class="score-fill" style="width:76.3%;background:#00ff88"></div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:11px;margin-bottom:12px">
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">ENTRY</div>
+      <div style="color:#eee;font-weight:bold">₹1,470.54</div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">STOP LOSS</div>
+      <div style="color:#ff4444;font-weight:bold">₹1,317.74 <span style="color:#667">(-10.2%)</span></div>
+    </div>
+    <div style="background:var(--bg);border-radius:4px;padding:6px">
+      <div style="color:var(--mu);font-size:9px">TARGET 2</div>
+      <div style="color:#00ff88;font-weight:bold">₹1,687.74 <span style="color:#667">(+15.0%)</span></div>
+    </div>
+  </div>
+
+  <div style="display:flex;gap:6px;margin-bottom:10px;font-size:10px">
+    <div style="flex:1;background:rgba(0,207,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">TECH</div>
+      <div style="color:#00cfff;font-weight:bold">74.0</div>
+    </div>
+    <div style="flex:1;background:rgba(204,136,255,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">FUND</div>
+      <div style="color:#cc88ff;font-weight:bold">87.0</div>
+    </div>
+    <div style="flex:1;background:rgba(255,170,0,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">SENT</div>
+      <div style="color:#ffaa00;font-weight:bold">65</div>
+    </div>
+    <div style="flex:1;background:rgba(0,255,136,0.08);border-radius:4px;padding:5px;text-align:center">
+      <div style="color:var(--mu)">R:R</div>
+      <div style="color:#00ff88;font-weight:bold">1:1.42</div>
+    </div>
+  </div>
+
+  <div style="font-size:11px;color:#889;line-height:1.6;border-top:1px solid var(--bd);padding-top:8px">
+    Tech Mahindra: ROE=16.61% — strong capital efficiency. Revenue growing at 12.6% — strong business momentum. Positive free cash flow generation. Low debt (D/E=7.27) — balance sheet strength. Positive n...
+  </div>
+
+  <div style="margin-top:8px;display:flex;gap:6px;font-size:9px">
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T1: ₹1,585</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T2: ₹1,688</span>
+    <span style="background:rgba(0,255,136,0.1);color:#00ff88;border:1px solid #00ff8844;border-radius:3px;padding:2px 6px">T3: ₹1,834</span>
+  </div>
+</div></div>
+</div>
+
+<!-- SCREENER TABLE -->
+<div class="sec">
+  <h2>▸ FULL SCREENER RANKINGS
+    <span style="color:var(--mu);font-size:10px;font-weight:normal;margin-left:8px">All 25 screened stocks · Composite score</span>
+  </h2>
+  <div style="overflow-x:auto">
+    <table>
+      <thead><tr>
+        <th>#</th><th>Ticker</th><th>Name</th>
+        <th style="text-align:right">Price</th><th style="text-align:right">Day%</th>
+        <th style="text-align:center">Tech (0-100)</th>
+        <th style="text-align:center">Fund (0-100)</th>
+        <th style="text-align:center">Sent (0-100)</th>
+        <th style="text-align:center">Composite</th>
+        <th style="text-align:center">Signal</th>
+        <th>Sector</th>
+      </tr></thead>
+      <tbody><tr>
+  <td style="color:var(--mu)">1</td>
+  <td style="color:var(--cy);font-weight:bold">NTPC</td>
+  <td style="color:#ccc">NTPC</td>
+  <td style="text-align:right;color:#eee">₹398.65</td>
+  <td style="text-align:right;color:#ff4444;font-weight:bold">-0.13%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">100.0</div><div class="score-bar"><div class="score-fill" style="width:100.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">86.0</div><div class="score-bar"><div class="score-fill" style="width:86.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">62</div><div class="score-bar"><div class="score-fill" style="width:62%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">85.7</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Utilities</td>
+</tr><tr>
+  <td style="color:var(--mu)">2</td>
+  <td style="color:var(--cy);font-weight:bold">POWERGRID</td>
+  <td style="color:#ccc">Power Grid Corporation</td>
+  <td style="text-align:right;color:#eee">₹318.40</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+0.02%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">100.0</div><div class="score-bar"><div class="score-fill" style="width:100.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">89.0</div><div class="score-bar"><div class="score-fill" style="width:89.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">56</div><div class="score-bar"><div class="score-fill" style="width:56%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">85.2</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Utilities</td>
+</tr><tr>
+  <td style="color:var(--mu)">3</td>
+  <td style="color:var(--cy);font-weight:bold">HINDUNILVR</td>
+  <td style="color:#ccc">HUL</td>
+  <td style="text-align:right;color:#eee">₹2,299.30</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+2.15%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">99.5</div><div class="score-bar"><div class="score-fill" style="width:99.5%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">77.0</div><div class="score-bar"><div class="score-fill" style="width:77.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">57</div><div class="score-bar"><div class="score-fill" style="width:57%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">81.2</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Consumer Defensive</td>
+</tr><tr>
+  <td style="color:var(--mu)">4</td>
+  <td style="color:var(--cy);font-weight:bold">RELIANCE</td>
+  <td style="color:#ccc">Reliance Industries</td>
+  <td style="text-align:right;color:#eee">₹1,458.80</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+1.96%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">84.0</div><div class="score-bar"><div class="score-fill" style="width:84.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">87.0</div><div class="score-bar"><div class="score-fill" style="width:87.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">57</div><div class="score-bar"><div class="score-fill" style="width:57%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">78.5</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Energy</td>
+</tr><tr>
+  <td style="color:var(--mu)">5</td>
+  <td style="color:var(--cy);font-weight:bold">SUNPHARMA</td>
+  <td style="color:#ccc">Sun Pharmaceutical</td>
+  <td style="text-align:right;color:#eee">₹1,822.10</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+0.76%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">95.0</div><div class="score-bar"><div class="score-fill" style="width:95.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">70.0</div><div class="score-bar"><div class="score-fill" style="width:70.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">62</div><div class="score-bar"><div class="score-fill" style="width:62%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">78.1</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Healthcare</td>
+</tr><tr>
+  <td style="color:var(--mu)">6</td>
+  <td style="color:var(--cy);font-weight:bold">BAJFINANCE</td>
+  <td style="color:#ccc">Bajaj Finance</td>
+  <td style="text-align:right;color:#eee">₹948.35</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+1.21%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">100.0</div><div class="score-bar"><div class="score-fill" style="width:100.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">68.0</div><div class="score-bar"><div class="score-fill" style="width:68.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">57</div><div class="score-bar"><div class="score-fill" style="width:57%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">78.0</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Financial Services</td>
+</tr><tr>
+  <td style="color:var(--mu)">7</td>
+  <td style="color:var(--cy);font-weight:bold">LT</td>
+  <td style="color:#ccc">Larsen & Toubro</td>
+  <td style="text-align:right;color:#eee">₹4,094.30</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+2.00%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">100.0</div><div class="score-bar"><div class="score-fill" style="width:100.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">54.0</div><div class="score-bar"><div class="score-fill" style="width:54.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">74</div><div class="score-bar"><div class="score-fill" style="width:74%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">77.4</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Industrials</td>
+</tr><tr>
+  <td style="color:var(--mu)">8</td>
+  <td style="color:var(--cy);font-weight:bold">MARUTI</td>
+  <td style="color:#ccc">Maruti Suzuki</td>
+  <td style="text-align:right;color:#eee">₹13,536.00</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+1.67%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">85.0</div><div class="score-bar"><div class="score-fill" style="width:85.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">81.0</div><div class="score-bar"><div class="score-fill" style="width:81.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">59</div><div class="score-bar"><div class="score-fill" style="width:59%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">77.1</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Consumer Cyclical</td>
+</tr><tr>
+  <td style="color:var(--mu)">9</td>
+  <td style="color:var(--cy);font-weight:bold">SBIN</td>
+  <td style="color:#ccc">State Bank of India</td>
+  <td style="text-align:right;color:#eee">₹1,069.80</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+0.13%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">78.0</div><div class="score-bar"><div class="score-fill" style="width:78.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">83.0</div><div class="score-bar"><div class="score-fill" style="width:83.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">65</div><div class="score-bar"><div class="score-fill" style="width:65%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">76.7</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Financial Services</td>
+</tr><tr>
+  <td style="color:var(--mu)">10</td>
+  <td style="color:var(--cy);font-weight:bold">TECHM</td>
+  <td style="color:#ccc">Tech Mahindra</td>
+  <td style="text-align:right;color:#eee">₹1,467.60</td>
+  <td style="text-align:right;color:#ff4444;font-weight:bold">-0.40%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">74.0</div><div class="score-bar"><div class="score-fill" style="width:74.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">87.0</div><div class="score-bar"><div class="score-fill" style="width:87.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">65</div><div class="score-bar"><div class="score-fill" style="width:65%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">76.3</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Technology</td>
+</tr><tr>
+  <td style="color:var(--mu)">11</td>
+  <td style="color:var(--cy);font-weight:bold">ITC</td>
+  <td style="color:#ccc">ITC</td>
+  <td style="text-align:right;color:#eee">₹311.10</td>
+  <td style="text-align:right;color:#ff4444;font-weight:bold">-1.21%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">83.5</div><div class="score-bar"><div class="score-fill" style="width:83.5%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">81.0</div><div class="score-bar"><div class="score-fill" style="width:81.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">57</div><div class="score-bar"><div class="score-fill" style="width:57%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">76.2</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Consumer Defensive</td>
+</tr><tr>
+  <td style="color:var(--mu)">12</td>
+  <td style="color:var(--cy);font-weight:bold">NESTLEIND</td>
+  <td style="color:#ccc">Nestle India</td>
+  <td style="text-align:right;color:#eee">₹1,456.10</td>
+  <td style="text-align:right;color:#ff4444;font-weight:bold">-0.17%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">75.0</div><div class="score-bar"><div class="score-fill" style="width:75.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">71.0</div><div class="score-bar"><div class="score-fill" style="width:71.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">62</div><div class="score-bar"><div class="score-fill" style="width:62%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">70.4</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Consumer Defensive</td>
+</tr><tr>
+  <td style="color:var(--mu)">13</td>
+  <td style="color:var(--cy);font-weight:bold">ULTRACEMCO</td>
+  <td style="color:#ccc">UltraTech Cement</td>
+  <td style="text-align:right;color:#eee">₹11,752.00</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+1.43%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">71.0</div><div class="score-bar"><div class="score-fill" style="width:71.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">64.0</div><div class="score-bar"><div class="score-fill" style="width:64.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">62</div><div class="score-bar"><div class="score-fill" style="width:62%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#00ff88">66.4</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#00ff8822;color:#00ff88;border:1px solid #00ff88">BUY</span>
+  </td>
+  <td style="color:#888;font-size:11px">Basic Materials</td>
+</tr><tr>
+  <td style="color:var(--mu)">14</td>
+  <td style="color:var(--cy);font-weight:bold">KOTAKBANK</td>
+  <td style="color:#ccc">Kotak Mahindra Bank</td>
+  <td style="text-align:right;color:#eee">₹371.70</td>
+  <td style="text-align:right;color:#ff4444;font-weight:bold">-3.03%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">34.0</div><div class="score-bar"><div class="score-fill" style="width:34.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">81.0</div><div class="score-bar"><div class="score-fill" style="width:81.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">57</div><div class="score-bar"><div class="score-fill" style="width:57%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#ffaa00">56.4</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#ffaa0022;color:#ffaa00;border:1px solid #ffaa00">HOLD</span>
+  </td>
+  <td style="color:#888;font-size:11px">Financial Services</td>
+</tr><tr>
+  <td style="color:var(--mu)">15</td>
+  <td style="color:var(--cy);font-weight:bold">HDFCBANK</td>
+  <td style="color:#ccc">HDFC Bank</td>
+  <td style="text-align:right;color:#eee">₹774.75</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+0.40%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">28.0</div><div class="score-bar"><div class="score-fill" style="width:28.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">81.0</div><div class="score-bar"><div class="score-fill" style="width:81.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">62</div><div class="score-bar"><div class="score-fill" style="width:62%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#ffaa00">55.1</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#ffaa0022;color:#ffaa00;border:1px solid #ffaa00">HOLD</span>
+  </td>
+  <td style="color:#888;font-size:11px">Financial Services</td>
+</tr><tr>
+  <td style="color:var(--mu)">16</td>
+  <td style="color:var(--cy);font-weight:bold">WIPRO</td>
+  <td style="color:#ccc">Wipro</td>
+  <td style="text-align:right;color:#eee">₹200.51</td>
+  <td style="text-align:right;color:#ff4444;font-weight:bold">-0.07%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">6.0</div><div class="score-bar"><div class="score-fill" style="width:6.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">100.0</div><div class="score-bar"><div class="score-fill" style="width:100.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">57</div><div class="score-bar"><div class="score-fill" style="width:57%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#ffaa00">51.8</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#ffaa0022;color:#ffaa00;border:1px solid #ffaa00">HOLD</span>
+  </td>
+  <td style="color:#888;font-size:11px">Technology</td>
+</tr><tr>
+  <td style="color:var(--mu)">17</td>
+  <td style="color:var(--cy);font-weight:bold">TATAMOTORS</td>
+  <td style="color:#ccc">Tata Motors</td>
+  <td style="text-align:right;color:#eee">₹0.00</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+0.00%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">50</div><div class="score-bar"><div class="score-fill" style="width:50%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">50.0</div><div class="score-bar"><div class="score-fill" style="width:50.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">56</div><div class="score-bar"><div class="score-fill" style="width:56%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#ffaa00">51.6</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#ffaa0022;color:#ffaa00;border:1px solid #ffaa00">HOLD</span>
+  </td>
+  <td style="color:#888;font-size:11px">N/A</td>
+</tr><tr>
+  <td style="color:var(--mu)">18</td>
+  <td style="color:var(--cy);font-weight:bold">BHARTIARTL</td>
+  <td style="color:#ccc">Bharti Airtel</td>
+  <td style="text-align:right;color:#eee">₹1,827.70</td>
+  <td style="text-align:right;color:#ff4444;font-weight:bold">-3.13%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">26.5</div><div class="score-bar"><div class="score-fill" style="width:26.5%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">73.0</div><div class="score-bar"><div class="score-fill" style="width:73.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">57</div><div class="score-bar"><div class="score-fill" style="width:57%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#ffaa00">50.6</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#ffaa0022;color:#ffaa00;border:1px solid #ffaa00">HOLD</span>
+  </td>
+  <td style="color:#888;font-size:11px">Communication Servic</td>
+</tr><tr>
+  <td style="color:var(--mu)">19</td>
+  <td style="color:var(--cy);font-weight:bold">AXISBANK</td>
+  <td style="color:#ccc">Axis Bank</td>
+  <td style="text-align:right;color:#eee">₹1,272.70</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+0.35%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">20.0</div><div class="score-bar"><div class="score-fill" style="width:20.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">81.0</div><div class="score-bar"><div class="score-fill" style="width:81.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">56</div><div class="score-bar"><div class="score-fill" style="width:56%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#ffaa00">50.4</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#ffaa0022;color:#ffaa00;border:1px solid #ffaa00">HOLD</span>
+  </td>
+  <td style="color:#888;font-size:11px">Financial Services</td>
+</tr><tr>
+  <td style="color:var(--mu)">20</td>
+  <td style="color:var(--cy);font-weight:bold">HCLTECH</td>
+  <td style="color:#ccc">HCL Technologies</td>
+  <td style="text-align:right;color:#eee">₹1,200.10</td>
+  <td style="text-align:right;color:#00ff88;font-weight:bold">+0.08%</td>
+  <td style="text-align:center"><div style="color:#00cfff;font-weight:bold">0.0</div><div class="score-bar"><div class="score-fill" style="width:0.0%;background:#00cfff"></div></div></td>
+  <td style="text-align:center"><div style="color:#cc88ff;font-weight:bold">100.0</div><div class="score-bar"><div class="score-fill" style="width:100.0%;background:#cc88ff"></div></div></td>
+  <td style="text-align:center"><div style="color:#ffaa00;font-weight:bold">57</div><div class="score-bar"><div class="score-fill" style="width:57%;background:#ffaa00"></div></div></td>
+  <td style="text-align:center;font-size:15px;font-weight:bold;color:#ffaa00">49.5</td>
+  <td style="text-align:center">
+    <span class="signal-badge" style="background:#ffaa0022;color:#ffaa00;border:1px solid #ffaa00">HOLD</span>
+  </td>
+  <td style="color:#888;font-size:11px">Technology</td>
+</tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SCORE CHARTS ROW -->
+<div class="g2" style="margin:0 16px;gap:12px">
+  <div class="sec" style="margin:0">
+    <h2>▸ COMPOSITE SCORE DISTRIBUTION</h2>
+    <div id="ch-scores" style="height:300px"></div>
+  </div>
+  <div class="sec" style="margin:0">
+    <h2>▸ TOP 5 STOCKS RADAR</h2>
+    <div id="ch-radar" style="height:300px"></div>
+  </div>
+</div>
+
+<!-- PEER COMPARISON TOOL -->
+<div class="sec">
+  <h2>▸ PEER COMPARISON TOOL
+    <span style="color:var(--mu);font-size:10px;font-weight:normal;margin-left:8px">Edit tickers below and click Compare</span>
+  </h2>
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+    <input id="peer1" type="text" class="search-input" style="width:120px" value="RELIANCE"/>
+    <input id="peer2" type="text" class="search-input" style="width:120px" value="TCS"/>
+    <input id="peer3" type="text" class="search-input" style="width:120px" value="INFY"/>
+    <input id="peer4" type="text" class="search-input" style="width:120px" value="WIPRO"/>
+    <button class="search-btn" onclick="doPeerCompare()">COMPARE</button>
+  </div>
+  <div id="peer-result">
+    <div style="color:#445;text-align:center;padding:20px;font-size:12px">Enter tickers and click Compare to see peer analysis</div>
+  </div>
+</div>
+
+<!-- MARKET NEWS -->
+<div class="sec">
+  <h2>▸ MARKET NEWS SENTIMENT
+    <span style="color:var(--mu);font-size:10px;font-weight:normal;margin-left:8px">20 articles analysed</span>
+  </h2>
+  <table>
+    <thead><tr><th>Headline</th><th>Source</th><th style="text-align:center">Sentiment</th></tr></thead>
+    <tbody><tr>
+  <td style="color:#bbb;font-size:11px">Ambuja Cements Q4 Results: Cons profit surges 78% YoY to Rs 1,830 crore; revenue rises 10%</td>
+  <td style="color:#667;font-size:10px">Economic Times Markets</td>
+  <td style="text-align:center">
+    <span style="color:#00ff88;font-size:10px;font-weight:bold">POSITIVE (69)</span>
+  </td>
+</tr><tr>
+  <td style="color:#bbb;font-size:11px">MCX shares drop 3% after Sebi chief's comments on commodity derivatives. What spooked investors?</td>
+  <td style="color:#667;font-size:10px">Economic Times Markets</td>
+  <td style="text-align:center">
+    <span style="color:#ff4444;font-size:10px;font-weight:bold">NEGATIVE (20)</span>
+  </td>
+</tr><tr>
+  <td style="color:#bbb;font-size:11px">Markets may be approaching near-term exhaustion after strong rally: Rohit Srivastava</td>
+  <td style="color:#667;font-size:10px">Economic Times Markets</td>
+  <td style="text-align:center">
+    <span style="color:#00ff88;font-size:10px;font-weight:bold">POSITIVE (70)</span>
+  </td>
+</tr><tr>
+  <td style="color:#bbb;font-size:11px">FIIs raised stakes in 13 stocks for 4 straight quarters; 5 turned multibaggers. Do you own any?</td>
+  <td style="color:#667;font-size:10px">Economic Times Markets</td>
+  <td style="text-align:center">
+    <span style="color:#00ff88;font-size:10px;font-weight:bold">POSITIVE (72)</span>
+  </td>
+</tr><tr>
+  <td style="color:#bbb;font-size:11px">Valor Estate shares locked in 20% upper circuit. What’s behind the sharp surge today?</td>
+  <td style="color:#667;font-size:10px">Economic Times Markets</td>
+  <td style="text-align:center">
+    <span style="color:#ffaa00;font-size:10px;font-weight:bold">NEUTRAL (58)</span>
+  </td>
+</tr><tr>
+  <td style="color:#bbb;font-size:11px">Godrej Properties posts quarterly profit rise on housing demand</td>
+  <td style="color:#667;font-size:10px">Economic Times Markets</td>
+  <td style="text-align:center">
+    <span style="color:#00ff88;font-size:10px;font-weight:bold">POSITIVE (70)</span>
+  </td>
+</tr><tr>
+  <td style="color:#bbb;font-size:11px">Maruti Suzuki, Bajaj Auto, other auto stocks jump up to 5% after strong April sales</td>
+  <td style="color:#667;font-size:10px">Economic Times Markets</td>
+  <td style="text-align:center">
+    <span style="color:#00ff88;font-size:10px;font-weight:bold">POSITIVE (76)</span>
+  </td>
+</tr><tr>
+  <td style="color:#bbb;font-size:11px">Markets likely near bottom range; stay invested: Devina Mehra</td>
+  <td style="color:#667;font-size:10px">Economic Times Markets</td>
+  <td style="text-align:center">
+    <span style="color:#00ff88;font-size:10px;font-weight:bold">POSITIVE (72)</span>
+  </td>
+</tr></tbody>
+  </table>
+</div>
+
+<div style="text-align:center;color:#334;padding:14px;font-size:11px;border-top:1px solid var(--bd);margin-top:8px">
+  Stock Intelligence Engine &nbsp;·&nbsp; Python + yfinance + NLP &nbsp;·&nbsp;
+  Fetched: 04-May-2026  14:48:32 &nbsp;·&nbsp;
+  <span style="color:var(--rd)">NOT INVESTMENT ADVICE</span>
+</div>
+
+<script>
+let _s=60;
+setInterval(()=>{_s=Math.max(0,_s-1);const e=document.getElementById('cd');if(e)e.textContent=_s+'s';},1000);
+
+const BG='#050A0F',G='#0d1e30',F='#99aabb';
+const L={paper_bgcolor:BG,plot_bgcolor:BG,font:{color:F,family:'Courier New',size:11},
+  margin:{t:20,b:40,l:55,r:20},
+  xaxis:{gridcolor:G,zerolinecolor:G,color:F},
+  yaxis:{gridcolor:G,zerolinecolor:G,color:F}};
+const CFG={responsive:true,displayModeBar:false};
+
+// Score distribution bar chart
+(()=>{
+  const tickers=["NTPC", "POWERGRID", "HINDUNILVR", "RELIANCE", "SUNPHARMA", "BAJFINANCE", "LT", "MARUTI", "SBIN", "TECHM", "ITC", "NESTLEIND", "ULTRACEMCO", "KOTAKBANK", "HDFCBANK", "WIPRO", "TATAMOTORS", "BHARTIARTL", "AXISBANK", "HCLTECH", "TCS", "ICICIBANK", "INFY", "ASIANPAINT", "TITAN"], scores=[85.7, 85.2, 81.2, 78.5, 78.1, 78.0, 77.4, 77.1, 76.7, 76.3, 76.2, 70.4, 66.4, 56.4, 55.1, 51.8, 51.6, 50.6, 50.4, 49.5, 49.1, 48.4, 46.3, 45.5, 45.3], colors=["#00ff88", "#00ff88", "#00ff88", "#00ff88", "#00ff88", "#00ff88", "#00ff88", "#00ff88", "#00ff88", "#00ff88", "#00ff88", "#00ff88", "#00ff88", "#ffaa00", "#ffaa00", "#ffaa00", "#ffaa00", "#ffaa00", "#ffaa00", "#ffaa00", "#ffaa00", "#ffaa00", "#ffaa00", "#ffaa00", "#ffaa00"];
+  Plotly.newPlot('ch-scores',[{
+    x:tickers, y:scores, type:'bar',
+    marker:{color:scores.map(s=>s>=65?'rgba(0,255,136,0.7)':s<=38?'rgba(255,68,68,0.7)':'rgba(255,170,0,0.7)')},
+    text:scores.map(s=>s+''),textposition:'outside',
+  }],Object.assign({},L,{
+    height:290,
+    xaxis:Object.assign({},L.xaxis,{tickangle:-45}),
+    yaxis:Object.assign({},L.yaxis,{title:'Composite Score',range:[0,110]}),
+    shapes:[
+      {type:'line',x0:-0.5,x1:tickers.length-0.5,y0:65,y1:65,line:{color:'#00ff88',dash:'dot',width:1}},
+      {type:'line',x0:-0.5,x1:tickers.length-0.5,y0:38,y1:38,line:{color:'#ff4444',dash:'dot',width:1}}
+    ]
+  }),CFG);
+})();
+
+// Radar chart
+(()=>{
+  const radarStocks=[{"name": "NTPC", "scores": [100.0, 86.0, 62.3, 56.4, 70]}, {"name": "POWERGRID", "scores": [100.0, 89.0, 56.3, 50.5, 70]}, {"name": "HINDUNILVR", "scores": [99.5, 77.0, 57.8, 63.2, 30]}, {"name": "RELIANCE", "scores": [84.0, 87.0, 57.8, 84.5, 70]}, {"name": "SUNPHARMA", "scores": [95.0, 70.0, 62.3, 93.8, 30]}];
+  const labels=["Tech", "Fundamental", "Sentiment", "Momentum", "Value"];
+  const traces=radarStocks.map(s=>{
+    const vals=[...s.scores,s.scores[0]];
+    const lbls=[...labels,labels[0]];
+    return {
+      type:'scatterpolar',r:vals,theta:lbls,fill:'toself',name:s.name,
+      opacity:0.7,
+      line:{width:2}
+    };
+  });
+  Plotly.newPlot('ch-radar',traces,Object.assign({},L,{
+    height:290,
+    polar:{bgcolor:BG,radialaxis:{visible:true,range:[0,100],color:F,gridcolor:G},
+           angularaxis:{color:F,gridcolor:G}},
+    paper_bgcolor:BG,
+    legend:{bgcolor:'rgba(0,0,0,0)',font:{size:10}},
+    margin:{t:20,b:20,l:30,r:30}
+  }),CFG);
+})();
+
+// — SEARCH functionality —————————————————————————————————
+document.getElementById('search-ticker').addEventListener('keydown', e => {
+  if(e.key==='Enter') doSearch();
+});
+
+function doSearch(){
+  const ticker=(document.getElementById('search-ticker').value||'').trim().toUpperCase();
+  if(!ticker) return;
+  const result=document.getElementById('search-result');
+  const ai=document.getElementById('ai-response');
+  result.style.display='block';
+  ai.innerHTML='<span class="ai-thinking">⟳ Analysing '+ticker+' with 15 technical + 15 fundamental indicators + AI insight...</span>';
+  document.getElementById('search-tech-table').innerHTML='';
+  document.getElementById('search-fund-table').innerHTML='';
+
+  fetch('http://127.0.0.1:8765/search?ticker='+encodeURIComponent(ticker))
+    .then(r=>r.json())
+    .then(data=>{
+      if(data.error){
+        ai.innerHTML='<span style="color:#ff4444">'+data.error+'</span>';
+        return;
+      }
+      renderSearchResult(data);
+    })
+    .catch(()=>{
+      // Standalone mode — show cached data if available
+      const cached=getScreeerData(ticker);
+      if(cached) renderSearchResult(cached);
+      else ai.innerHTML='<span style="color:#ffaa00">Run with main.py server for live search. Showing screener cache if available.</span>';
+    });
+}
+
+function getScreeerData(ticker){
+  // Look for the ticker in screener data embedded in the page
+  return null;
+}
+
+function renderSearchResult(data){
+  const ai=document.getElementById('ai-response');
+  const sig_col=data.signal==='BUY'?'#00ff88':data.signal==='SELL'?'#ff4444':'#ffaa00';
+  let html=`<b style="color:${sig_col};font-size:16px">${data.signal} — ${data.name}</b>
+    <span style="color:#aaa;margin-left:10px">₹${data.price?.toLocaleString()} · Composite: ${data.composite}/100</span>
+    <br><br>${data.rationale||''}
+    <br><br><b style="color:var(--cy)">Entry:</b> ₹${data.entry} &nbsp;
+    <b style="color:#ff4444">Stop:</b> ₹${data.sl} &nbsp;
+    <b style="color:#00ff88">T1:</b> ₹${data.t1} &nbsp;
+    <b style="color:#00ff88">T2:</b> ₹${data.t2} &nbsp;
+    <b style="color:#00ff88">T3:</b> ₹${data.t3}`;
+  ai.innerHTML=html;
+
+  // Technical table
+  if(data.tech_rows){
+    let tbl='<table class="peer-table"><thead><tr><th>Indicator</th><th>Value</th><th>Signal</th></tr></thead><tbody>';
+    data.tech_rows.forEach(r=>{
+      tbl+=`<tr><td style="color:#aaa">${r[0]}</td><td style="color:#eee">${r[1]}</td>
+              <td><span style="color:${r[3]};font-size:10px">${r[2]}</span></td></tr>`;
+    });
+    tbl+='</tbody></table>';
+    document.getElementById('search-tech-table').innerHTML='<div class="sec" style="margin:0"><h2>▸ 15 TECHNICAL INDICATORS</h2>'+tbl+'</div>';
+  }
+
+  // Fundamental table
+  if(data.fund_rows){
+    let tbl='<table class="peer-table"><thead><tr><th>Metric</th><th>Value</th><th>Assessment</th></tr></thead><tbody>';
+    data.fund_rows.forEach(r=>{
+      tbl+=`<tr><td style="color:#aaa">${r[0]}</td><td style="color:#eee">${r[1]}</td>
+              <td><span style="color:${r[3]};font-size:10px">${r[2]}</span></td></tr>`;
+    });
+    tbl+='</tbody></table>';
+    document.getElementById('search-fund-table').innerHTML='<div class="sec" style="margin:0"><h2>▸ 15 FUNDAMENTAL METRICS</h2>'+tbl+'</div>';
+  }
+
+  // Charts
+  if(data.closes && data.closes.length){
+    const xs=data.closes.map((_,i)=>i);
+    const traces=[
+      {x:xs,y:data.closes,mode:'lines',name:'Close',line:{color:'#00cfff',width:2}},
+    ];
+    if(data.ma20) traces.push({x:xs,y:data.ma20,mode:'lines',name:'MA20',line:{color:'#00ff88',width:1,dash:'dot'}});
+    if(data.ma50) traces.push({x:xs,y:data.ma50,mode:'lines',name:'MA50',line:{color:'#ffaa00',width:1,dash:'dot'}});
+    Plotly.newPlot('ch-search-price',traces,Object.assign({},L,{height:250,
+      yaxis:Object.assign({},L.yaxis,{title:'Price (₹)'})
+    }),CFG);
+  }
+  if(data.rsi_series && data.rsi_series.length){
+    const xs=data.rsi_series.map((_,i)=>i);
+    Plotly.newPlot('ch-search-rsi',[
+      {x:xs,y:data.rsi_series,mode:'lines',name:'RSI',line:{color:'#cc88ff',width:2}},
+      {x:[0,xs[xs.length-1]],y:[70,70],mode:'lines',line:{color:'#ff4444',dash:'dot',width:1},name:'OB (70)'},
+      {x:[0,xs[xs.length-1]],y:[30,30],mode:'lines',line:{color:'#00ff88',dash:'dot',width:1},name:'OS (30)'}
+    ],Object.assign({},L,{height:250,
+      yaxis:Object.assign({},L.yaxis,{title:'RSI',range:[0,100]})
+    }),CFG);
+  }
+}
+
+// — PEER COMPARISON ——————————————————————————————————————
+function doPeerCompare(){
+  const tickers=['peer1','peer2','peer3','peer4'].map(id=>document.getElementById(id).value.trim().toUpperCase()).filter(Boolean);
+  const res=document.getElementById('peer-result');
+  res.innerHTML='<div style="color:var(--am);padding:20px;text-align:center">⟳ Fetching peer data...</div>';
+
+  const params=tickers.map(t=>'t='+encodeURIComponent(t)).join('&');
+  fetch('http://127.0.0.1:8765/peer?'+params)
+    .then(r=>r.json())
+    .then(data=>renderPeerTable(data))
+    .catch(()=>{
+      res.innerHTML='<div style="color:#ffaa00;padding:20px">Run with main.py server for live peer comparison.</div>';
+    });
+}
+
+function renderPeerTable(peers){
+  if(!peers||!peers.length)return;
+  const res=document.getElementById('peer-result');
+  const metrics=['P/E','P/B','ROE%','ROCE%','EPS Growth','Rev Growth','D/E','Current Ratio','Op Margin','Net Margin'];
+  let tbl='<div style="overflow-x:auto"><table class="peer-table"><thead><tr><th>Metric</th>';
+  peers.forEach(p=>{tbl+=`<th style="text-align:right">${p.ticker}</th>`;}); tbl+='</tr></thead><tbody>';
+
+  const fundKeys=['pe','pb','roe','roce','eps_growth','revenue_growth','debt_equity','current_ratio','operating_margin','net_margin'];
+  fundKeys.forEach((k,i)=>{
+    const vals=peers.map(p=>p.fund?.[k]);
+    const numVals=vals.filter(v=>v!=null&&!isNaN(v));
+    if(!numVals.length) return;
+    const best=Math.max(...numVals), worst=Math.min(...numVals);
+    tbl+=`<tr><td style="color:#aaa">${metrics[i]}</td>`;
+    vals.forEach(v=>{
+      if(v==null){tbl+='<td style="text-align:right;color:#445">N/A</td>';return;}
+      const c2=Math.abs(v-best)<0.01?'#00ff88':Math.abs(v-worst)<0.01?'#ff4444':'#eee';
+      tbl+=`<td style="text-align:right;color:${c2};font-weight:${c2!='#eee'?'bold':'normal'}">${typeof v==='number'?v.toFixed(1):'—'}</td>`;
+    });
+    tbl+='</tr>';
+  });
+
+  // Composite scores row
+  tbl+='<tr style="border-top:2px solid var(--bd)"><td style="color:var(--cy);font-weight:bold">Composite Score</td>';
+  peers.forEach(p=>{
+    const c2=p.composite>=65?'#00ff88':p.composite<=38?'#ff4444':'#ffaa00';
+    tbl+=`<td style="text-align:right;color:${c2};font-weight:bold">${p.composite}</td>`;
+  });
+  tbl+='</tr></tbody></table></div>';
+  res.innerHTML=tbl;
+
+  // Peer bar chart
+  const chartDiv=document.createElement('div');
+  chartDiv.id='ch-peer';chartDiv.style.height='240px';chartDiv.style.marginTop='12px';
+  res.appendChild(chartDiv);
+
+  Plotly.newPlot('ch-peer',[
+    {x:peers.map(p=>p.ticker),y:peers.map(p=>p.tech_score),type:'bar',name:'Tech',marker:{color:'rgba(0,207,255,0.7)'}},
+    {x:peers.map(p=>p.ticker),y:peers.map(p=>p.fund_score),type:'bar',name:'Fund',marker:{color:'rgba(204,136,255,0.7)'}},
+    {x:peers.map(p=>p.ticker),y:peers.map(p=>p.sent_score||50),type:'bar',name:'Sentiment',marker:{color:'rgba(255,170,0,0.7)'}},
+  ],Object.assign({},L,{
+    height:230,barmode:'group',
+    yaxis:Object.assign({},L.yaxis,{title:'Score (0-100)',range:[0,110]}),
+    legend:{bgcolor:'rgba(0,0,0,0)'}
+  }),CFG);
+}
+</script>
+</body></html>
