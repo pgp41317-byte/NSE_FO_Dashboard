@@ -8,6 +8,8 @@ from signal_engine import option_chain_summary, detect_option_activity
 from charts import oi_bar_chart, change_oi_chart
 from simple_alerts import scan_simple_market, only_active_alerts
 from cash_scanner import scan_cash_market, get_live_alerts
+from datetime import datetime
+from zoneinfo import ZoneInfo
 from futures_scanner import create_futures_buildup_table, futures_signal_summary, futures_buildup_chart, top_long_short_tables
 from simple_alerts import scan_simple_market, only_active_alerts
 @st.fragment(run_every="5s")
@@ -154,7 +156,7 @@ elif page == "Simple Market Alerts":
     while True:
 
         refresh_placeholder.info(
-            f"Last Updated: {time.strftime('%H:%M:%S')}"
+            f"Last Updated: {datetime.now(ZoneInfo('Asia/Kolkata')).strftime('%d-%b-%Y %I:%M:%S %p IST')}"
         )
 
         full_df = scan_simple_market(limit=stock_limit)
