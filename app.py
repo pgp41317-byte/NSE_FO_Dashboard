@@ -1,4 +1,5 @@
 import streamlit as st
+import time
 from sector_rotation import sector_summary, sector_bar_chart, sector_strength_chart, sector_leaders_laggards
 from market_heatmap import create_market_heatmap, create_top_movers_table, create_volume_spike_table
 from relative_strength import create_relative_strength_table, rs_summary, rs_scatter_chart, top_outperformers_underperformers
@@ -248,43 +249,107 @@ elif page == "Option Chain & OI":
 
 
 elif page == "Cash Market Scanner":
+
+    import time
+
     st.title("💹 Cash Market Scanner")
     st.caption("Scans selected NSE stocks using 5-minute delayed/free data")
 
-    scanner_df = scan_cash_market()
+    refresh_placeholder = st.empty()
+    table_placeholder = st.empty()
 
-    st.dataframe(scanner_df, use_container_width=True, height=700)
+    while True:
+
+        refresh_placeholder.info(
+            f"Last Updated: {datetime.now(ZoneInfo('Asia/Kolkata')).strftime('%d-%b-%Y %I:%M:%S %p IST')}"
+        )
+
+        scanner_df = scan_cash_market()
+
+        with table_placeholder.container():
+            st.dataframe(
+                scanner_df,
+                use_container_width=True,
+                height=700
+            )
+
+        time.sleep(5)
 
 
 elif page == "Live Alerts":
+
+    import time
+
     st.title("🚨 Live Alerts")
 
-    scanner_df = scan_cash_market()
-    alerts_df = get_live_alerts(scanner_df)
+    refresh_placeholder = st.empty()
+    status_placeholder = st.empty()
+    alerts_placeholder = st.empty()
+    table_placeholder = st.empty()
 
-    if alerts_df.empty:
-        st.success("No major buying/selling or volume spike alert right now.")
-    else:
-        for _, row in alerts_df.iterrows():
-            signal = row["Signal"]
+    while True:
 
-            text = (
-                f"{row['Symbol']} — {row['Signal']} | "
-                f"Price: {row['Price']} | "
-                f"Day Change: {row.get('Day Change %', 'NA')}% | "
-                f"5m Change: {row['5m Change %']}% | "
-                f"Volume Ratio: {row['Volume Ratio']}x | "
-                f"Strength: {row['Strength']}/100"
+        refresh_placeholder.info(
+            f"Last Updated: {datetime.now(ZoneInfo('Asia/Kolkata')).strftime('%d-%b-%Y %I:%M:%S %p IST')}"
+        )
+
+        status_placeholder.warning("Scanning market data... please wait")
+
+        try:
+            scanner_df = scan_cash_market()
+            alerts_df = get_live_alerts(scanner_df)
+
+            status_placeholder.success(
+                f"Scan completed. Stocks scanned: {len(scanner_df)} | Alerts found: {len(alerts_df)}"
             )
 
-            if "Buying" in signal or "Positive" in signal:
-                st.success("🚀 " + text)
-            elif "Selling" in signal or "Negative" in signal:
-                st.error("🔻 " + text)
-            else:
-                st.warning("⚠️ " + text)
+            with alerts_placeholder.container():
 
-        st.dataframe(alerts_df, use_container_width=True, height=500)
+                st.subheader("🚨 Current Live Alerts")
+
+                if alerts_df.empty:
+                    st.success("No major buying/selling or volume spike alert right now.")
+
+                else:
+                    for _, row in alerts_df.iterrows():
+
+                        signal = row["Signal"]
+
+                        text = (
+                            f"{row['Symbol']} — {row['Signal']} | "
+                            f"Price: {row['Price']} | "
+                            f"Day Change: {row.get('Day Change %', 'NA')}% | "
+                            f"5m Change: {row['5m Change %']}% | "
+                            f"Volume Ratio: {row['Volume Ratio']}x | "
+                            f"Strength: {row['Strength']}/100"
+                        )
+
+                        if "Buying" in signal or "Positive" in signal:
+                            st.success("🚀 " + text)
+
+                        elif "Selling" in signal or "Negative" in signal:
+                            st.error("🔻 " + text)
+
+                        else:
+                            st.warning("⚠️ " + text)
+
+            with table_placeholder.container():
+
+                st.subheader("Full Live Alert Table")
+
+                if alerts_df.empty:
+                    st.info("No alert rows to show.")
+                else:
+                    st.dataframe(
+                        alerts_df,
+                        use_container_width=True,
+                        height=500
+                    )
+
+        except Exception as e:
+            status_placeholder.error(f"Live Alerts error: {e}")
+
+        time.sleep(5)
 
 
 elif page == "Market Heatmap":
