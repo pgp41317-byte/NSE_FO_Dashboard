@@ -40,9 +40,9 @@ def scan_simple_market(limit=100):
             week_high = float(df["High"].max())
             week_low = float(df["Low"].min())
 
-            day_open = float(day_df.iloc[0]["Open"])
+            prev_day_close = float(df[df.index.date < df.index[-1].date()]["Close"].iloc[-1])
 
-            day_change = ((price - day_open) / day_open) * 100
+            day_change = ((price - prev_day_close) / prev_day_close) * 100 if prev_day_close else 0
             five_min_change = ((price - prev_price) / prev_price) * 100
 
             latest_volume = float(latest["Volume"])

@@ -83,11 +83,9 @@ def scan_cash_market():
                 (latest_price - prev_price) / prev_price
             ) * 100
 
-            day_open = stock.iloc[0]["Open"]
+            prev_day_close = stock[stock.index.date < stock.index[-1].date()]["Close"].iloc[-1]
 
-            day_change = (
-                (latest_price - day_open) / day_open
-            ) * 100
+            day_change = ((latest_price - prev_day_close) / prev_day_close) * 100 if prev_day_close else 0  
 
             latest_volume = latest["Volume"]
 
