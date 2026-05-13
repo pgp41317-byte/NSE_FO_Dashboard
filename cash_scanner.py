@@ -4,6 +4,34 @@ from datetime import datetime
 from nifty500 import NIFTY500
 
 
+def get_live_quote(ticker, fallback_price=None):
+    try:
+        fi = yf.Ticker(ticker).fast_info
+
+        price = (
+            fi.get("last_price")
+            or fi.get("lastPrice")
+            or fi.get("regular_market_price")
+            or fi.get("regularMarketPrice")
+        )
+
+        prev_close = (
+            fi.get("previous_close")
+            or fi.get("previousClose")
+        )
+
+        if price is not None:
+            price = float(price)
+
+        if prev_close is not None:
+            prev_close = float(prev_close)
+
+        return price, prev_close
+
+    except Exception:
+        return fallback_price, None
+
+
 def fetch_batch_data(tickers):
     try:
         data = yf.download(
@@ -15,60 +43,43 @@ def fetch_batch_data(tickers):
             progress=False,
             threads=True
         )
-
         return data
-
     except Exception:
         return pd.DataFrame()
 
 
 def calculate_signal(day_change, candle_change, volume_ratio):
-
     if day_change > 2 and volume_ratio > 1.5:
         return "Aggressive Buying"
-
     elif day_change < -2 and volume_ratio > 1.5:
         return "Aggressive Selling"
-
     elif candle_change > 0.5 and volume_ratio > 1.2:
         return "Momentum Buying"
-
     elif candle_change < -0.5 and volume_ratio > 1.2:
         return "Momentum Selling"
-
     elif volume_ratio > 2:
         return "Volume Explosion"
-
     elif abs(day_change) > 3:
         return "Large Directional Move"
-
     else:
         return "Normal"
 
 
 def strength_score(day_change, candle_change, volume_ratio):
-
     score = 0
-
     score += min(abs(day_change) * 12, 40)
     score += min(abs(candle_change) * 18, 25)
     score += min(volume_ratio * 20, 35)
-
     return round(min(score, 100), 1)
 
 
 def scan_cash_market():
-
     batch_data = fetch_batch_data(NIFTY500)
-
     rows = []
 
     for ticker in NIFTY500:
-
         try:
-            stock = batch_data[ticker]
-
-            stock = stock.dropna()
+            stock = batch_data[ticker].dropna()
 
             if len(stock) < 10:
                 continue
@@ -76,37 +87,34 @@ def scan_cash_market():
             latest = stock.iloc[-1]
             previous = stock.iloc[-2]
 
-            latest_price = latest["Close"]
-            prev_price = previous["Close"]
+            candle_price = float(latest["Close"])
+            prev_5m_price = float(previous["Close"])
+
+            live_price, live_prev_close = get_live_quote(ticker, candle_price)
+
+            latest_price = float(live_price if live_price is not None else candle_price)
+
+            prev_day_close = float(
+                live_prev_close
+                if live_prev_close is not None
+                else stock[stock.index.date < stock.index[-1].date()]["Close"].iloc[-1]
+            )
 
             candle_change = (
-                (latest_price - prev_price) / prev_price
-            ) * 100
+                (latest_price - prev_5m_price) / prev_5m_price
+            ) * 100 if prev_5m_price else 0
 
-            prev_day_close = stock[stock.index.date < stock.index[-1].date()]["Close"].iloc[-1]
+            day_change = (
+                (latest_price - prev_day_close) / prev_day_close
+            ) * 100 if prev_day_close else 0
 
-            day_change = ((latest_price - prev_day_close) / prev_day_close) * 100 if prev_day_close else 0  
+            latest_volume = float(latest["Volume"])
+            avg_volume = float(stock["Volume"].tail(20).mean())
 
-            latest_volume = latest["Volume"]
+            volume_ratio = latest_volume / avg_volume if avg_volume > 0 else 0
 
-            avg_volume = stock["Volume"].tail(20).mean()
-
-            volume_ratio = (
-                latest_volume / avg_volume
-                if avg_volume > 0 else 0
-            )
-
-            signal = calculate_signal(
-                day_change,
-                candle_change,
-                volume_ratio
-            )
-
-            strength = strength_score(
-                day_change,
-                candle_change,
-                volume_ratio
-            )
+            signal = calculate_signal(day_change, candle_change, volume_ratio)
+            strength = strength_score(day_change, candle_change, volume_ratio)
 
             rows.append({
                 "Symbol": ticker.replace(".NS", ""),
@@ -128,26 +136,14 @@ def scan_cash_market():
     if result.empty:
         return result
 
-    return result.sort_values(
-        "Strength",
-        ascending=False
-    )
+    return result.sort_values("Strength", ascending=False)
 
 
 def get_live_alerts(scanner_df):
-
     if scanner_df.empty:
         return pd.DataFrame()
 
-    alerts = scanner_df[
-        scanner_df["Strength"] >= 40
-    ]
+    alerts = scanner_df[scanner_df["Strength"] >= 40]
+    alerts = alerts[alerts["Signal"] != "Normal"]
 
-    alerts = alerts[
-        alerts["Signal"] != "Normal"
-    ]
-
-    return alerts.sort_values(
-        "Strength",
-        ascending=False
-    )
+    return alerts.sort_values("Strength", ascending=False)

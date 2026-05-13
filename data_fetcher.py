@@ -2,7 +2,24 @@ import requests
 import pandas as pd
 import yfinance as yf
 from config import NSE_BASE_URL
+def get_yf_live_price(ticker, fallback_price=None):
+    try:
+        fi = yf.Ticker(ticker).fast_info
 
+        price = (
+            fi.get("last_price")
+            or fi.get("lastPrice")
+            or fi.get("regular_market_price")
+            or fi.get("regularMarketPrice")
+        )
+
+        if price is not None:
+            return float(price)
+
+    except Exception:
+        pass
+
+    return float(fallback_price) if fallback_price is not None else None
 
 def get_yfinance_index_data(symbol_map):
     rows = []
@@ -17,8 +34,10 @@ def get_yfinance_index_data(symbol_map):
 
             close = data["Close"].dropna()
 
-            latest = float(close.iloc[-1])
-            previous = float(close.iloc[-2]) if len(close) > 1 else latest
+            candle_latest = float(close.iloc[-1])
+            previous = float(close.iloc[-2]) if len(close) > 1 else candle_latest
+
+            latest = get_yf_live_price(ticker, candle_latest)
 
             change_pct = ((latest - previous) / previous) * 100 if previous else 0
 
